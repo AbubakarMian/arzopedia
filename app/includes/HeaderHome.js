@@ -1,88 +1,57 @@
 import React from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Dimensions, Button, StyleSheet, Image, ImageBackground, ScrollView } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { connect } from 'react-redux';
-import { Constants } from '../View/Constant'
-import { SET_USER, LOGOUT_USER } from '../redux/constants/index';
-// import ModalDropdown from 'react-native-modal-dropdown';
+import {
+    View, Text, TouchableHighlight, TouchableOpacity,
+    Dimensions, Button, StyleSheet, Image, ImageBackground, ScrollView, TextInput
+} from 'react-native';
+import styles from '../styleSheets/HeaderCss';
+
 var { width, height } = Dimensions.get('window');
- class HeaderHome extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: 0, 
-            access_token:Constants.autherizationKey
-        }
-    }
-    
-    static navigationOptions = {
-        header: null,
+export const mylist = [];
 
-    };
-    logout(){
 
-        console.log('here');
-        this.props.setUser(this.state);
-        this.props.navigation.navigate('SignIn')
-    }
+
+export default class HeaderHome extends React.Component {
+
     render() {
+        console.log('props !!!!!!!!',this.props.navigation.navigation)
         return (
-            <View style={{
-                flexDirection: 'row',
-                backgroundColor: '#1099ea',
-                height: 60,
-                alignItems: 'center',
-            }}>
-                <View style={{ flex: 1 , flexDirection:'row' }}>
-                <TouchableOpacity
-                         onPress={() =>this.logout()}
-                        underlayColor='#000'
-                        style={{alignItems:'flex-start' ,paddingLeft:20 }} >
-                        <View >
-                            <Image
-                                style={{
-                                    height: 30,
-                                    width: 30,
-                                }}
-                                source={require('../images/logout.png')}
-                            />
-                            <Text style={{color:'#fff'}}>Logout</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                         onPress={() => this.props.navigation.navigate('Settings')}
-                        underlayColor='#000'
-                        style={{alignItems:'flex-end' ,marginLeft:250}} >
-                        <View
-                        style={{alignSelf:'center'}}
+            <View >
+                <View style={{
+                    flexDirection: 'row',
+                    width: width,
+                    paddingVertical: 20,
+                    backgroundColor: '#43c6ac',
+                }}>
+                    <View style={{ flex: 0.5, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigation.openDrawer()}
                         >
                             <Image
                                 style={{
-                                    height: 30,
-                                    width: 30,
+                                    width: 25,
+                                    height: 25,
                                 }}
-                                source={require('../images/settings.png')}
+                                resizeMode="contain"
+                                source={require('../images/menu.png')}
                             />
-                        </View>
-                        <Text style={{color:'#fff'}}>Settings</Text>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{
+                        flex: 2,
+                        justifyContent: 'center', alignSelf: 'center', alignItems: 'center'
+                    }}>
+                        <Text style={{
+                            textAlign: 'center',
+                            color: '#fff',
+                            fontWeight:'bold',
+                            fontSize:18,
+                        }}>
+                            {this.props.heading}
+                        </Text>
+                    </View>
+                    <View style={{paddingHorizontal:35}}></View>
                 </View>
             </View>
         );
     }
 }
-
-
-function mapStateToProps(state) {
-    return {
-      user: state.userReducer
-    }
-  };
-  function mapDispatchToProps(dispatch) {
-    return {
-      setUser: (value) => dispatch({ type: SET_USER ,value:value}),
-      logoutUser: () => dispatch({ type: LOGOUT_USER })
-    }
-  };
-  export default connect(mapStateToProps, mapDispatchToProps)(HeaderHome)
