@@ -14,6 +14,7 @@ import {
     ScrollView, Platform, Alert, Picker
 } from 'react-native';
 import HomeData from '../views/HomeData';
+import HeaderHome from '../includes/HeaderHome';
 var { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
@@ -36,6 +37,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <HeaderHome heading="Home" navigation={this.props} />
                 <ImageBackground
                     style={styles.ImageBackground}
                 >
