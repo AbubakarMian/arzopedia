@@ -40,7 +40,7 @@ export default class Home extends React.Component {
                     style={styles.ImageBackground}
                 >
 
-                    <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' , }}>
                         <Image
                             style={{
                                 width: width,
