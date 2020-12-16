@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text, Image, TouchableOpacity, TouchableHighlight,StyleSheet } from 'react-native';
+import { Button, View, Text, Image, TouchableOpacity, TouchableHighlight, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './views/Home';
 import SignIn from './views/SignIn';
@@ -22,16 +22,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 const Drawer = createDrawerNavigator();
 function CustomDrawerContent({ navigation }) {
   return (
-    <ScrollView style={{backgroundColor:'#43C6AC'}}>
-      <View style={{alignSelf:'center',justifyContent:'center',height:150}}>
-      <Image
-            style={{
-              width:230,
-              height: 70,
-              alignSelf:'center',justifyContent:'center'
-            }}
-            source={require('./images/whitelogo.png')}
-          />
+    <ScrollView style={{ backgroundColor: '#43C6AC' }}>
+      <View style={{ alignSelf: 'center', justifyContent: 'center', height: 150 }}>
+        <Image
+          style={{
+            width: 230,
+            height: 70,
+            alignSelf: 'center', justifyContent: 'center'
+          }}
+          source={require('./images/whitelogo.png')}
+        />
       </View>
       <TouchableHighlight
         underlayColor="#191654"
@@ -193,7 +193,7 @@ function CustomDrawerContent({ navigation }) {
           <Text style={styles.BtnText}>Log out</Text>
         </View>
       </TouchableHighlight>
-      
+
     </ScrollView>
   );
 }
@@ -207,8 +207,8 @@ export default class AppNavigation extends React.Component {
 
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
-          <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="SignIn" component={SignIn} />
+          <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="SignUp" component={SignUp} />
           <Drawer.Screen name="ForgetPassword" component={ForgetPassword} />
           <Drawer.Screen name="AddProperties" component={AddProperties} />
@@ -227,14 +227,14 @@ export default class AppNavigation extends React.Component {
 const styles = StyleSheet.create({
   TouchBtn: {
     backgroundColor: 'transparent',
-     paddingHorizontal: 30,
-      paddingVertical: 10,
-      marginVertical:1,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    marginVertical: 1,
   },
-  BtnText:{
+  BtnText: {
     color: '#fff',
-     alignSelf: 'center',
-      marginLeft: 25,
-       fontSize: 18
+    alignSelf: 'center',
+    marginLeft: 25,
+    fontSize: 18
   },
 });
