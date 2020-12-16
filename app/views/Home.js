@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import HomeData from '../views/HomeData';
 import HeaderHome from '../includes/HeaderHome';
+import { Constants } from '../views/Constant';
 var { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
@@ -25,12 +26,15 @@ const options = [
 ];
 export default class Home extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            tabIndex:1
+        this.state = {
+            tabIndex: 1,
+           
         }
     }
+
+ 
 
 
 
@@ -42,7 +46,7 @@ export default class Home extends React.Component {
                     style={styles.ImageBackground}
                 >
 
-                    <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' , }}>
+                    <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', }}>
                         <Image
                             style={{
                                 width: width,
@@ -60,34 +64,34 @@ export default class Home extends React.Component {
                             borderColor={"#43c6ac"}
                             textColor={"#43c6ac"}
                             borderRadius={5}
-                            onPress={(value) => {this.setState({tabIndex:value})}}
+                            onPress={(value) => { this.setState({ tabIndex: value }) }}
                             style={{ position: 'absolute', width: width - 80, top: 30 }}
                         />
                         <View style={styles.TextBoxArea}>
                             <TextInput
                                 underlineColorAndroid="transparent"
                                 onChangeText={text => this.setState({ email: text })}
-                                placeholder="USER NAME"
-                                placeholderTextColor="#1d1d1d"
+                                placeholder="Search Properties"
+                                placeholderTextColor="#A9A9A9"
                                 style={styles.TextInputArea}
                             />
                             <TouchableOpacity
                                 onPress={() => this.props.navigation.navigate('SearchProperties')}
                                 style={styles.TextInputIcon}
                             >
-                            <Image
-                                style={styles.TextInputIcon}
-                                source={require('../images/search.png')}
-                            />
+                                <Image
+                                    style={styles.TextInputIcon}
+                                    source={require('../images/search.png')}
+                                />
                             </TouchableOpacity>
                         </View>
-                        {this.state.tabIndex == 1 ?
-                        <HomeData/>
-                        :
-                        <View>
-                            <Text>Rent</Text>
-                        </View>}
-                        
+                        {/* {this.state.tabIndex == 1 ? */}
+                            <HomeData />
+                            {/* :
+                            <View>
+                                <Text>Rent</Text>
+                            </View>} */}
+
                     </View>
                 </ImageBackground>
             </View>
