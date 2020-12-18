@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { Constants } from '../views/Constant';
 var { width, height } = Dimensions.get('window');
+import Spinner from 'react-native-loading-spinner-overlay';
 import sampleImg from '../images/image.png';
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
 
@@ -115,6 +116,10 @@ export default class HomeData extends React.Component {
         console.log('props !!!!!!!!!!!!', this.props.navigation)
         return (
             <ScrollView>
+                 <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
                 <View style={{ width: width - 30, marginVertical: 10 }}>
                     <Text style={{ color: '#43c6ac', fontWeight: 'bold', fontSize: 20 }}>
                         Popular Projects
