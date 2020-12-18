@@ -26,14 +26,62 @@ class SignUp extends React.Component {
         this.state = {
             name: '',
             email: '',
+            number: '',
             password: '',
-            message: '',
-            user: '',
-            id: 0
+            confirmPassword: '',
+            access_token: '',
+            spinner:false ,
+            id:0
         }
     }
     static navigationOptions = {
         header: null,
+    };
+   
+    onPressSignup = async () => {
+        this.setState({spinner:true});
+        if (this.state.email.trim() === '') {
+            // this.refs.PopUp.setModal(true, 'Please Enter valid Input');
+            Alert.alert('enter correct email');
+            return;
+        }
+
+
+        var formData = new FormData();
+        formData.append('email', this.state.email); // this.state.email
+        formData.append('name', this.state.name);
+        formData.append('password', this.state.password);
+        console.log('formData',formData)
+        let postData = {    
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: this.props.user.access_token,
+            'Authorization-secure': this.props.user.access_token,
+            'client-id' : Constants.clientID
+          },
+          body: formData,
+        };
+        console.log('url',Constants.signUp);
+        fetch(Constants.signUp, postData)
+          .then(response => response.json())
+          .then(async responseJson => {
+            this.setState({spinner:false});
+            console.log('responseJson',responseJson);
+            if (responseJson.status === true) {
+                this.setState({
+                    access_token: responseJson.response.access_token,
+                });
+                this.props.setUser(this.state);
+                this.props.navigation.navigate('Home')
+            } else {
+                Alert.alert('Error','Greetings Error')
+                // this.refs.PopUp.setModal(true, responseJson.error.message);
+            }
+          })
+          .catch(error => {
+          });
     };
 
 

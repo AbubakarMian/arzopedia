@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { Constants } from '../views/Constant';
 var { width, height } = Dimensions.get('window');
-
+import sampleImg from '../images/image.png';
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
 
 const options = [
@@ -37,6 +37,7 @@ export default class HomeData extends React.Component {
     componentDidMount() {
         console.log('here in didmount ')
         this.getpopularproject();
+        this.getfeatureproperty();
     }
 
     getpopularproject() {
@@ -70,11 +71,48 @@ export default class HomeData extends React.Component {
             });
     }
     getfeatureproperty() {
+        let postData = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.clientID
+            },
+        };
+        return fetch(Constants.getFeatureProperty, postData)
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({ spinner: false });
+                console.log('"response Json feature ', responseJson.response);
+                if (responseJson.status === true) {
+                    this.setState({
+                        featureproperties: responseJson.response,
+                    });
+                } else {
+                    // this.refs.PopUp.setModal(true , responseJson.error.message);
+                    Alert.alert('Error', 'Bad Request');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
+    projectDetails(item) {
+        console.log(item)
+        // this.props.navigation.navigation.navigate('PropertyDetails')
+    }
+
+    propertyDetails() {
+        console.log(item)
+        // this.props.navigation.navigation.navigate('PropertyDetails')
     }
 
 
     render() {
+        console.log('props !!!!!!!!!!!!', this.props.navigation)
         return (
             <ScrollView>
                 <View style={{ width: width - 30, marginVertical: 10 }}>
@@ -85,16 +123,17 @@ export default class HomeData extends React.Component {
                         Wapda Town, Lahore, Punjab
                                 </Text>
                 </View>
-                <ScrollView horizontal={true} style={{ flexDirection: 'row', }}>
+                <ScrollView horizontal={true} >
                     <FlatList
                         data={this.state.popularproject}
                         numColumns={3}
                         style={{ flex: 1 }}
                         renderItem={({ item, index }) => (
-                            <View style={{ flexDirection: 'row', borderBottomColor: "#ddd", borderBottomWidth: 3, alignSelf: 'center', }}>
+                            <View style={{ flexDirection: 'column', borderBottomColor: "#ddd", borderBottomWidth: 3, alignSelf: 'center', }}>
                                 <TouchableOpacity
                                     style={{ flex: 1, marginBottom: 20 }}
-                                    onPress={() => this.props.navigation.navigate('PropertyDetails')}
+                                    // onPress={() => this.props.navigation.navigate('PropertyDetails')}
+                                    onPress={() => this.projectDetails(item)}
                                 >
                                     <View >
                                         <Image
@@ -105,10 +144,10 @@ export default class HomeData extends React.Component {
                                                 borderColor: '#fff'
                                             }}
                                             resizeMode="contain"
-                                            source={require('../images/image.png')}
+                                            source={require('../images/icon-22.png')}
                                         />
                                         <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View>
-                                        <View><Text>{}</Text></View>
+                                        <View><Text>{ }</Text></View>
                                     </View>
                                 </TouchableOpacity>
 
@@ -124,8 +163,18 @@ export default class HomeData extends React.Component {
                         Wapda Town, Lahore, Punjab
                                 </Text>
                 </View>
+
+                {/* <FlatList
+
+                    data={this.state.popularproject}
+                    numColumns={3}
+                    style={{ flex: 1 }}
+                    renderItem={({ item, index }) => ( */}
                 <View style={{ flexDirection: 'row', alignSelf: 'center', width: width - 30 }}>
+
+
                     <TouchableOpacity
+                        onPress={() => this.projectDetails()}
                         style={{ flex: 1, marginBottom: 20 }}
                     >
                         <View >
@@ -135,11 +184,15 @@ export default class HomeData extends React.Component {
                                     height: 115,
                                 }}
                                 resizeMode="contain"
+                                // source={{uri:item.avatar}}
                                 source={require('../images/image.png')}
                             />
-                            <View><Text>Huzaifa Comfort is my new Home </Text></View>
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>Huzaifa Comfort</Text></View>
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR :45,000,000 </Text></View>
+                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
+                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
+                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
+                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
+                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
+                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                 <View style={{ flex: 1 }}>
                                     <Image
@@ -174,159 +227,120 @@ export default class HomeData extends React.Component {
                             </View>
                         </View>
                     </TouchableOpacity>
-                    
+                    <TouchableOpacity
+                        onPress={() => this.projectDetails()}
+                        style={{ flex: 1, marginBottom: 20 }}
+                    >
+                        <View >
+                            <Image
+                                style={{
+                                    width: '100%',
+                                    height: 115,
+                                }}
+                                resizeMode="contain"
+                                // source={{uri:item.avatar}}
+                                source={require('../images/image.png')}
+                            />
+                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
+                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
+                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
+                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
+                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
+                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
+                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-22.png')}
+                                    />
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-23.png')}
+                                    />
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-24.png')}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.projectDetails()}
+                        style={{ flex: 1, marginBottom: 20 }}
+                    >
+                        <View >
+                            <Image
+                                style={{
+                                    width: '100%',
+                                    height: 115,
+                                }}
+                                resizeMode="contain"
+                                // source={{uri:item.avatar}}
+                                source={require('../images/image.png')}
+                            />
+                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
+                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
+                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
+                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
+                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
+                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
+                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-22.png')}
+                                    />
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-23.png')}
+                                    />
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 30,
+                                        }}
+                                        resizeMode="contain"
+                                        source={require('../images/icon-24.png')}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
                 </View>
-                {/* new Section */}
-                <View style={{ flexDirection: 'row', alignSelf: 'center', width: width - 30 }}>
-                    <TouchableOpacity
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                source={require('../images/image.png')}
-                            />
-                            <View><Text>Huzaifa Comfort is my new Home </Text></View>
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>Huzaifa Comfort</Text></View>
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR :45,000,000 </Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                source={require('../images/image.png')}
-                            />
-                            <View><Text>Huzaifa Comfort is my new Home </Text></View>
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>Huzaifa Comfort</Text></View>
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR :45,000,000 </Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                source={require('../images/image.png')}
-                            />
-                            <View><Text>Huzaifa Comfort is my new Home </Text></View>
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>Huzaifa Comfort</Text></View>
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR :45,000,000 </Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                {/* end new section */}
+                {/* )}
+                /> */}
+
+
             </ScrollView>
         )
 

@@ -86,7 +86,7 @@ export default class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         {/* {this.state.tabIndex == 1 ? */}
-                            <HomeData />
+                            <HomeData navigation={this.props}/>
                             {/* :
                             <View>
                                 <Text>Rent</Text>
