@@ -16,6 +16,7 @@ import {
 import HomeData from '../views/HomeData';
 import HeaderHome from '../includes/HeaderHome';
 import { Constants } from '../views/Constant';
+import { type } from 'os';
 var { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
@@ -30,11 +31,11 @@ export default class Home extends React.Component {
         super(props);
         this.state = {
             tabIndex: 1,
-           
+
         }
     }
 
- 
+
 
 
 
@@ -67,27 +68,50 @@ export default class Home extends React.Component {
                             onPress={(value) => { this.setState({ tabIndex: value }) }}
                             style={{ position: 'absolute', width: width - 80, top: 30 }}
                         />
-                        <View style={styles.TextBoxArea}>
-                            <TextInput
-                                underlineColorAndroid="transparent"
-                                onChangeText={text => this.setState({ email: text })}
-                                placeholder="Search Properties"
-                                placeholderTextColor="#A9A9A9"
-                                style={styles.TextInputArea}
-                            />
-                            <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('SearchProperties')}
-                                style={styles.TextInputIcon}
-                            >
-                                <Image
-                                    style={styles.TextInputIcon}
-                                    source={require('../images/search.png')}
+                        {this.state.tabIndex == 1 ?
+
+                            <View style={styles.TextBoxArea}>
+                                <TextInput
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={text => this.setState({ email: text })}
+                                    placeholder="Search Buy Properties"
+                                    placeholderTextColor="#A9A9A9"
+                                    style={styles.TextInputArea}
                                 />
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity
+                                    onPress={() => this.props.navigation.navigate('SearchProperties',{type:'buy'})}
+                                    style={styles.TextInputIcon}
+                                >
+                                    <Image
+                                        style={styles.TextInputIcon}
+                                        source={require('../images/search.png')}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            :
+
+                            <View style={styles.TextBoxArea}>
+                                <TextInput
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={text => this.setState({ email: text })}
+                                    placeholder="Search Rent Properties"
+                                    placeholderTextColor="#A9A9A9"
+                                    style={styles.TextInputArea}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => this.props.navigation.navigate('SearchProperties',{type:'rent'})}
+                                    style={styles.TextInputIcon}
+                                >
+                                    <Image
+                                        style={styles.TextInputIcon}
+                                        source={require('../images/search.png')}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        }
                         {/* {this.state.tabIndex == 1 ? */}
-                            <HomeData navigation={this.props}/>
-                            {/* :
+                        <HomeData navigation={this.props} />
+                        {/* :
                             <View>
                                 <Text>Rent</Text>
                             </View>} */}

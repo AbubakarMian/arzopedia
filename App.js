@@ -24,6 +24,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import AppNavigation from './app/AppNavigation';
 import CustomSplashScreen from './app/views/SplashScreen';
+import configureStore from './app/redux/store/configureStore';
+import { Provider } from 'react-redux';
 
 export default class App extends Component {
   constructor(props) {
@@ -51,9 +53,12 @@ export default class App extends Component {
       return <CustomSplashScreen />;
     } else {
       return (
+        <Provider store={configureStore}>
         <View style={{ flex: 1 }}>
+        <StatusBar hidden={true} translucent={true} />
           <AppNavigation />
         </View>
+        </Provider>
       );
     }
   }

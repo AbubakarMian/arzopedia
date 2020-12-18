@@ -207,10 +207,13 @@ export default class AppNavigation extends React.Component {
 
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
-             <Drawer.Screen name="AddProperties" component={AddProperties} />
+            
+        
+            
           <Drawer.Screen name="SignIn" component={SignIn} />
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="SignUp" component={SignUp} />
+          <Drawer.Screen name="AddProperties" component={AddProperties} />
           <Drawer.Screen name="ForgetPassword" component={ForgetPassword} />
           <Drawer.Screen name="SearchProperties" component={SearchProperties} />
           <Drawer.Screen name="SearchResults" component={SearchResults} />

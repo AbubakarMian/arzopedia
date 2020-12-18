@@ -16,6 +16,7 @@ import Header from '../includes/Header';
 import { Constants } from '../views/Constant';
 import DropDownPicker from 'react-native-dropdown-picker';
 import ImagePicker from 'react-native-image-crop-picker';
+import Spinner from 'react-native-loading-spinner-overlay';
 // import styles from '../styleSheets/SignUpCss'
 var { width, height } = Dimensions.get('window');
 
@@ -26,7 +27,7 @@ export default class AddProperties extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            spinner: true,
+            spinner: false,
             categoryarr: [],
             details: '',
             address: '',
@@ -35,12 +36,13 @@ export default class AddProperties extends React.Component {
             city: '',
             lat: '',
             long: '',
-            bathroom: '',
-            bedroom: '',
+            bath: '',
+            bed: '',
             sqm: '',
             contact: '',
             type: '',
-            property_type: '',
+            property_type: 1,
+            avatar:[]
 
         };
     }
@@ -83,47 +85,130 @@ export default class AddProperties extends React.Component {
             });
     }
 
-    addProperty(){
+    addProperty() {
+        this.setState({
+            spinner: true,
+        })
         var formData = new FormData();
-        formData.append('email', this.state.email); // this.state.email
-        formData.append('name', this.state.name);
-        formData.append('password', this.state.password);
-        console.log('formData',formData)
-        let postData = {    
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-            Authorization: this.props.user.access_token,
-            'Authorization-secure': this.props.user.access_token,
-            'client-id' : Constants.clientID
-          },
-          body: formData,
+        formData.append('details', this.state.details); // this.state.email
+        formData.append('address', this.state.address);
+        formData.append('title', this.state.title);
+        formData.append('price', this.state.price);
+        formData.append('city', this.state.city);
+        formData.append('lat', this.state.lat);
+        formData.append('long', this.state.long);
+        formData.append('bath', this.state.bath);
+        formData.append('bed', this.state.bed);
+        formData.append('sqm', this.state.sqm);
+        formData.append('contact', this.state.contact);
+        formData.append('type', this.state.type);
+        formData.append('property_type_id', this.state.property_type);
+        formData.append('avatar', this.state.avatar);
+        console.log('formData', formData)
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.clientID
+            },
+            body: formData,
         };
-        console.log('url',Constants.signUp);
-        fetch(Constants.signUp, postData)
-          .then(response => response.json())
-          .then(async responseJson => {
-            this.setState({spinner:false});
-            console.log('responseJson',responseJson);
-            if (responseJson.status === true) {
+        console.log('url', Constants.addProperty);
+        fetch(Constants.addProperty, postData)
+            .then(response => response.json())
+            .then(async responseJson => {
+                this.setState({ spinner: false });
+                console.log('responseJson', responseJson);
+                if (responseJson.status === true) {
+                    this.setState({
+                        access_token: responseJson.response.access_token,
+                    });
+                    this.props.setUser(this.state);
+                    this.props.navigation.navigate('Home')
+                } else {
+                    Alert.alert('Error', 'Greetings Error')
+                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                }
+            })
+            .catch(error => {
+            });
+    }
+
+
+    imageUpload() {
+        ImagePicker.openPicker({
+            filename: true,
+            cropping: true,
+        }).then(image => {
+            console.log('Image console !!!!!!!', image);
+            this.setState({
+                imagePath: image.path,
+                imageType: image.mime,
+                spinner: true,
+            })
+            this.getImage(image);
+
+        })
+
+    }
+
+    async getImage(image) {
+        const upload_body = {
+            uri: image.path,
+            type: image.mime,
+            name: Platform.OS === 'ios' ? image['filename'] : `my_profile_${Date.now()}.${image[image.mime] === 'image/jpeg' ? 'jpg' : 'png'}`,
+        }
+        console.log('upload body !!!!!!!!', upload_body);
+        let _data_body = new FormData()
+        _data_body.append('avatar', upload_body)
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.uploadFile
+            },
+            body: _data_body,
+        };
+        console.log('post data !!!!!!!!!!!!!', postData);
+        // fetch(Constants.uploadFile, postData)
+        // await fetch('https://development.hatinco.com/greetings_backed/public/api/uploadFile', postData)
+        await fetch(Constants.uploadFile, postData)
+            .then(response => response.json())
+            .then(async responseJson => {
                 this.setState({
-                    access_token: responseJson.response.access_token,
+                    spinner: false,
                 });
-                this.props.setUser(this.state);
-                this.props.navigation.navigate('Home')
-            } else {
-                Alert.alert('Error','Greetings Error')
-                // this.refs.PopUp.setModal(true, responseJson.error.message);
-            }
-          })
-          .catch(error => {
-          });
+                console.log('upload image responseJson', responseJson);
+                if (responseJson.status === true) {
+                    let array_list = this.state.avatar.concat(responseJson.response);
+                    this.setState({
+                        avatar: array_list,
+                    });
+                } else {
+                      Alert.alert('Error', responseJson.error);
+                    // console.log('Error', responseJson.error);
+                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                }
+            })
+            .catch(error => {
+
+            });
+
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
                 <ImageBackground
                     style={styles.ImageBackground}
                 >
@@ -263,7 +348,6 @@ export default class AddProperties extends React.Component {
                                     <View style={{ flex: 1, marginRight: 5 }}>
                                         {/* {this.state.categoryarr.length < 1 ? null : */}
                                         <DropDownPicker
-                                            // items={this.state.categoryarr}
                                             items={this.state.categoryarr}
                                             // containerStyle={{ height: 50, width: width - 50, marginTop: 15 }}    
                                             style={{
@@ -278,7 +362,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Property Type"
                                             dropDownStyle={{ backgroundColor: '#fafafa' }}
                                             onChangeItem={item => this.setState({
-                                                property_type: item.id
+                                                property_type: item.name
                                             })}
                                         />
                                     </View>
@@ -291,9 +375,19 @@ export default class AddProperties extends React.Component {
                                             style={styles.TextInputArea}
                                         />
                                     </View>
+
                                 </View>
                                 <TouchableHighlight
-                                    onPress={{}}
+                                    onPress={() => this.imageUpload()}
+                                    // onPress={() => this.props.setUser()}
+                                    underlayColor='#1b1464'
+                                    style={[{ width: width - 150, marginBottom: 40 }, styles.LoginTouch]} >
+                                    <View >
+                                        <Text style={{ textAlign: 'left', color: '#fff', fontSize: 15 }} >Upload Image</Text>
+                                    </View>
+                                </TouchableHighlight>
+                                <TouchableHighlight
+                                    onPress={() => this.addProperty()}
                                     // onPress={() => this.props.setUser()}
                                     underlayColor='#1b1464'
                                     style={[{ width: width - 80, marginBottom: 40 }, styles.LoginTouch]} >
