@@ -13,6 +13,9 @@ import {
     ScrollView, Platform, Alert, Picker
 } from 'react-native';
 import Header from '../includes/Header';
+import { Constants } from '../views/Constant';
+import DropDownPicker from 'react-native-dropdown-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 // import styles from '../styleSheets/SignUpCss'
 var { width, height } = Dimensions.get('window');
 
@@ -20,6 +23,103 @@ const isIos = Platform.OS === 'ios' ? '?ios' : '';
 
 export default class AddProperties extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            spinner: true,
+            categoryarr: [],
+            details: '',
+            address: '',
+            title: '',
+            price: '',
+            city: '',
+            lat: '',
+            long: '',
+            bathroom: '',
+            bedroom: '',
+            sqm: '',
+            contact: '',
+            type: '',
+            property_type: '',
+
+        };
+    }
+
+    componentDidMount() {
+        this.getPropertyType();
+    }
+
+
+    getPropertyType() {
+        let postData = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.clientID
+            },
+        };
+        return fetch(Constants.property_type, postData)
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({ spinner: false });
+                console.log('"response Json type   ', responseJson.response);
+                if (responseJson.status === true) {
+                    let res = responseJson.response;
+                    let categoryarr = res.map((x, key) => { return { label: x.name, value: x.id } });
+                    console.log('categoryarr !!!!!!!!', categoryarr);
+                    this.setState({
+                        categoryarr: categoryarr,
+                    });
+                } else {
+                    // this.refs.PopUp.setModal(true , responseJson.error.message);
+                    Alert.alert('Error', 'Bad Request');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    addProperty(){
+        var formData = new FormData();
+        formData.append('email', this.state.email); // this.state.email
+        formData.append('name', this.state.name);
+        formData.append('password', this.state.password);
+        console.log('formData',formData)
+        let postData = {    
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: this.props.user.access_token,
+            'Authorization-secure': this.props.user.access_token,
+            'client-id' : Constants.clientID
+          },
+          body: formData,
+        };
+        console.log('url',Constants.signUp);
+        fetch(Constants.signUp, postData)
+          .then(response => response.json())
+          .then(async responseJson => {
+            this.setState({spinner:false});
+            console.log('responseJson',responseJson);
+            if (responseJson.status === true) {
+                this.setState({
+                    access_token: responseJson.response.access_token,
+                });
+                this.props.setUser(this.state);
+                this.props.navigation.navigate('Home')
+            } else {
+                Alert.alert('Error','Greetings Error')
+                // this.refs.PopUp.setModal(true, responseJson.error.message);
+            }
+          })
+          .catch(error => {
+          });
+    }
 
     render() {
         return (
@@ -35,8 +135,8 @@ export default class AddProperties extends React.Component {
                                     <TextInput
                                         multiline={true}
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ message: text })}
-                                        placeholder=" Message"
+                                        onChangeText={text => this.setState({ details: text })}
+                                        placeholder=" Details"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputAreaMsg}
                                     />
@@ -44,8 +144,8 @@ export default class AddProperties extends React.Component {
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        onChangeText={text => this.setState({ address: text })}
+                                        placeholder="Address"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
@@ -53,21 +153,18 @@ export default class AddProperties extends React.Component {
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        onChangeText={text => this.setState({ title: text })}
+                                        placeholder="Title"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
                                 </View>
-                                <View style={styles.TextBoxArea}>
-                                    <Text>therezczxczxc</Text>
-                                </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ price: text })}
+                                            placeholder="Price"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -75,28 +172,8 @@ export default class AddProperties extends React.Component {
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
-                                            placeholderTextColor="#1d1d1d"
-                                            style={styles.TextInputArea}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
-                                        <TextInput
-                                            underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
-                                            placeholderTextColor="#1d1d1d"
-                                            style={styles.TextInputArea}
-                                        />
-                                    </View>
-                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
-                                        <TextInput
-                                            underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ city: text })}
+                                            placeholder="City"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -106,8 +183,8 @@ export default class AddProperties extends React.Component {
                                     <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ lat: text })}
+                                            placeholder="Latitude"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -115,8 +192,101 @@ export default class AddProperties extends React.Component {
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ long: text })}
+                                            placeholder="Logitude"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ sqm: text })}
+                                            placeholder="Area"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ contact: text })}
+                                            placeholder="Contact No"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ bed: text })}
+                                            placeholder="Bedroom"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ bath: text })}
+                                            placeholder="Bathroom"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ type: text })}
+                                            placeholder="Type"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ bath: text })}
+                                            placeholder="Bathroom"
+                                            placeholderTextColor="#1d1d1d"
+                                            style={styles.TextInputArea}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ flex: 1, marginRight: 5 }}>
+                                        {/* {this.state.categoryarr.length < 1 ? null : */}
+                                        <DropDownPicker
+                                            // items={this.state.categoryarr}
+                                            items={this.state.categoryarr}
+                                            // containerStyle={{ height: 50, width: width - 50, marginTop: 15 }}    
+                                            style={{
+                                                borderColor: '#ccc',
+                                                backgroundColor: '#fff',
+                                                borderRadius: 10, marginTop: 15,
+                                                borderWidth: 2
+                                            }}
+                                            itemStyle={{
+                                                justifyContent: 'flex-start'
+                                            }}
+                                            placeholder="Property Type"
+                                            dropDownStyle={{ backgroundColor: '#fafafa' }}
+                                            onChangeItem={item => this.setState({
+                                                property_type: item.id
+                                            })}
+                                        />
+                                    </View>
+                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                        <TextInput
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={text => this.setState({ bath: text })}
+                                            placeholder="Bathroom"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -126,7 +296,7 @@ export default class AddProperties extends React.Component {
                                     onPress={{}}
                                     // onPress={() => this.props.setUser()}
                                     underlayColor='#1b1464'
-                                    style={[{ width: width - 80 }, styles.LoginTouch]} >
+                                    style={[{ width: width - 80, marginBottom: 40 }, styles.LoginTouch]} >
                                     <View >
                                         <Text style={{ color: '#fff', fontSize: 20 }} >SUBMIT</Text>
                                     </View>
