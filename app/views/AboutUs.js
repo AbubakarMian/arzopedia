@@ -27,7 +27,7 @@ export default class AboutUs extends React.Component {
                 <ImageBackground
                     style={styles.ImageBackground}
                 >
-                    <Header heading="Privacy Policy" navigation={this.props} />
+                    <Header heading="About Us" navigation={this.props} />
                     <ScrollView>
                         <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
                             

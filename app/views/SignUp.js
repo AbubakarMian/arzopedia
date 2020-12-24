@@ -27,10 +27,10 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'tt',
-            email: 'tt4@mail.com',
+            name: '',
+            email: '',
             number: '',
-            password: '123',
+            password: '',
             confirmPassword: '',
             access_token: '',
             spinner: false,
@@ -79,7 +79,8 @@ class SignUp extends React.Component {
                     this.props.setUser(this.state);
                     this.props.navigation.navigate('Home')
                 } else {
-                    Alert.alert('Error', responseJson.error.message)
+                    let message = JSON.stringify(responseJson.error.message)
+                    Alert.alert('Error', message)
                     // this.refs.PopUp.setModal(true, responseJson.error.message);
                 }
             })
@@ -134,6 +135,7 @@ class SignUp extends React.Component {
                                         onChangeText={text => this.setState({ password: text })}
                                         placeholder="PASSWORD"
                                         placeholderTextColor="#1d1d1d"
+                                        secureTextEntry={true}
                                         style={styles.TextInputArea}
                                     />
                                 </View>

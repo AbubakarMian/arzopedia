@@ -16,7 +16,6 @@ import {
 import HomeData from '../views/HomeData';
 import HeaderHome from '../includes/HeaderHome';
 import { Constants } from '../views/Constant';
-import { type } from 'os';
 var { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
