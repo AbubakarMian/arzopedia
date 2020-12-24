@@ -108,7 +108,7 @@ class SignIn extends React.Component {
                                     <TextInput
                                         underlineColorAndroid="transparent"
                                         onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        placeholder="Email"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
