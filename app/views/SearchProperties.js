@@ -13,6 +13,8 @@ import {
     ScrollView, Platform, Alert, Picker
 } from 'react-native';
 import Header from '../includes/Header';
+import { Constants } from '../views/Constant';
+import Spinner from 'react-native-loading-spinner-overlay';
 // import styles from '../styleSheets/SignUpCss'
 var { width, height } = Dimensions.get('window');
 
@@ -20,10 +22,72 @@ const isIos = Platform.OS === 'ios' ? '?ios' : '';
 
 export default class SearchProperties extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: '',
+            PropertyType: '',
+            areaUnit: '',
+            selectMaxArea: '',
+            selectMinArea: '',
+            maxPrice: '',
+            minPrice: '',
+            spinner: ''
+        }
+    }
+    searchProperty() {
+
+        this.setState({
+            spinner: true,
+        })
+        var formData = new FormData();
+        formData.append('location', this.state.location); // this.state.email
+        formData.append('PropertyType', this.state.PropertyType);
+        formData.append('areaUnit', this.state.areaUnit);
+        formData.append('selectMaxArea', this.state.selectMaxArea);
+        formData.append('selectMinArea', this.state.selectMinArea);
+        formData.append('maxPrice', this.state.maxPrice);
+        formData.append('minPrice', this.state.minPrice);
+        formData.append('type', this.props.route.params.type);
+        console.log('formData', formData)
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.clientID
+            },
+            body: formData,
+        };
+        console.log('url searchProperty', Constants.searchProperty);
+        fetch(Constants.searchProperty, postData)
+            .then(response => response.json())
+            .then(async responseJson => {
+                this.setState({ spinner: false });
+                console.log('responseJson', responseJson);
+                if (responseJson.status === true) {
+                    let res = responseJson.response;
+                    this.props.navigation.navigate('SearchResults', {properties:res})
+                } else {
+                    Alert.alert('Error',  responseJson.error.message)
+                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                }
+            })
+            .catch(error => {
+                console.log('Error ',error);
+                Alert.alert('Error')
+            });
+    }
 
     render() {
         return (
             <View style={styles.container}>
+                 <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
                 <ImageBackground
                     style={styles.ImageBackground}
                 >
@@ -31,12 +95,12 @@ export default class SearchProperties extends React.Component {
                     <ScrollView>
                         <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
                             <View>
-                                
+
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        onChangeText={text => this.setState({ location: text })}
+                                        placeholder="Location"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
@@ -44,8 +108,8 @@ export default class SearchProperties extends React.Component {
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        onChangeText={text => this.setState({ PropertyType: text })}
+                                        placeholder="Property Type"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
@@ -53,28 +117,18 @@ export default class SearchProperties extends React.Component {
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
+                                        onChangeText={text => this.setState({ areaUnit: text })}
+                                        placeholder="Area Unit"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                     />
                                 </View>
-                                <View style={styles.TextBoxArea}>
-                                    <TextInput
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
-                                        placeholder="USER NAME"
-                                        placeholderTextColor="#1d1d1d"
-                                        style={styles.TextInputArea}
-                                    />
-                                </View>
-                                
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ selectMaxArea: text })}
+                                            placeholder="Max Area"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -82,8 +136,8 @@ export default class SearchProperties extends React.Component {
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ selectMinArea: text })}
+                                            placeholder="Min Area"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -93,8 +147,8 @@ export default class SearchProperties extends React.Component {
                                     <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ maxPrice: text })}
+                                            placeholder="Max Area"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
@@ -102,19 +156,19 @@ export default class SearchProperties extends React.Component {
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ email: text })}
-                                            placeholder="USER NAME"
+                                            onChangeText={text => this.setState({ minPrice: text })}
+                                            placeholder="Min Price"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
                                     </View>
                                 </View>
-                                
+
                                 <TouchableHighlight
-                                    onPress={() => this.props.navigation.navigate('SearchResults')}
-                                    // onPress={() => this.props.setUser()}
+                                    // onPress={() => this.props.navigation.navigate('SearchResults')}
+                                    onPress={() => this.searchProperty()}
                                     underlayColor='#1b1464'
-                                    style={[{ width: width - 66  }, styles.LoginTouch]} >
+                                    style={[{ width: width - 66 }, styles.LoginTouch]} >
                                     <View >
                                         <Text style={{ color: '#fff', fontSize: 20 }} >Search Property</Text>
                                     </View>

@@ -31,7 +31,7 @@ export default class HomeData extends React.Component {
             tabIndex: 1,
             popularproject: [],
             featureproperties: [],
-            spinner: ''
+            spinner: true
         }
     }
 
@@ -57,7 +57,7 @@ export default class HomeData extends React.Component {
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({ spinner: false });
-                console.log('"response Json', responseJson.response);
+                // console.log('response Json projects ', responseJson.response);
                 if (responseJson.status === true) {
                     this.setState({
                         popularproject: responseJson.response,
@@ -86,7 +86,7 @@ export default class HomeData extends React.Component {
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({ spinner: false });
-                console.log('"response Json feature ', responseJson.response);
+                console.log('response Json feature ', responseJson.response);
                 if (responseJson.status === true) {
                     this.setState({
                         featureproperties: responseJson.response,
@@ -113,244 +113,126 @@ export default class HomeData extends React.Component {
 
 
     render() {
-        console.log('props !!!!!!!!!!!!', this.props.navigation)
+        console.log('props !!!!!!!!!',this.props)
         return (
             <ScrollView>
-                 <Spinner
+                <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
                 />
                 <View style={{ width: width - 30, marginVertical: 10 }}>
                     <Text style={{ color: '#43c6ac', fontWeight: 'bold', fontSize: 20 }}>
                         Popular Projects
-                                </Text>
-                    <Text style={{}}>
-                        Wapda Town, Lahore, Punjab
-                                </Text>
+                            </Text>
                 </View>
-                <ScrollView horizontal={true} >
-                    <FlatList
-                        data={this.state.popularproject}
-                        numColumns={3}
-                        style={{ flex: 1 }}
-                        renderItem={({ item, index }) => (
-                            <View style={{ flexDirection: 'column', borderBottomColor: "#ddd", borderBottomWidth: 3, alignSelf: 'center', }}>
+                <FlatList
+                    data={this.state.popularproject}
+                    // numColumns={10}
+                    horizontal
+                    // style={{ flex: 1 }}
+                    renderItem={({ item, index }) => (
+
+                        <ScrollView style={{ flexDirection: 'row' }}  >
+                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, marginHorizontal: 5 }}>
                                 <TouchableOpacity
                                     style={{ flex: 1, marginBottom: 20 }}
-                                    // onPress={() => this.props.navigation.navigate('PropertyDetails')}
-                                    onPress={() => this.projectDetails(item)}
+                                    onPress={() => this.props.navigation.navigation.navigate('PropertyDetails', { prop_id: item.id })}
                                 >
                                     <View >
                                         <Image
                                             style={{
                                                 width: '100%',
                                                 height: 115,
-                                                borderWidth: 5,
-                                                borderColor: '#fff'
                                             }}
                                             resizeMode="contain"
-                                            source={require('../images/icon-22.png')}
+                                            // source={require('../images/image.png')}
+                                            source={{uri:item.image}}
                                         />
                                         <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View>
-                                        <View><Text>{ }</Text></View>
+                                        <View><Text>{item.address}</Text></View>
                                     </View>
                                 </TouchableOpacity>
-
                             </View>
-                        )}
-                    />
-                </ScrollView>
+                        </ScrollView>
+                    )}
+                />
                 <View style={{ width: width - 30, marginVertical: 10 }}>
                     <Text style={{ color: '#43c6ac', fontWeight: 'bold', fontSize: 20 }}>
                         Feature Listing Properties
-                                </Text>
-                    <Text style={{}}>
-                        Wapda Town, Lahore, Punjab
-                                </Text>
-                </View>
-
-                {/* <FlatList
-
-                    data={this.state.popularproject}
-                    numColumns={3}
-                    style={{ flex: 1 }}
-                    renderItem={({ item, index }) => ( */}
-                <View style={{ flexDirection: 'row', alignSelf: 'center', width: width - 30 }}>
-
-
-                    <TouchableOpacity
-                        onPress={() => this.projectDetails()}
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                // source={{uri:item.avatar}}
-                                source={require('../images/image.png')}
-                            />
-                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
-                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
-                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
-                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.projectDetails()}
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                // source={{uri:item.avatar}}
-                                source={require('../images/image.png')}
-                            />
-                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
-                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
-                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
-                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.projectDetails()}
-                        style={{ flex: 1, marginBottom: 20 }}
-                    >
-                        <View >
-                            <Image
-                                style={{
-                                    width: '100%',
-                                    height: 115,
-                                }}
-                                resizeMode="contain"
-                                // source={{uri:item.avatar}}
-                                source={require('../images/image.png')}
-                            />
-                            {/* <View><Text style={{width:100}} numberOfLines={1} >{item.details}</Text></View> */}
-                            <View><Text style={{ width: 100 }} numberOfLines={1} >sdlkfksdfj</Text></View>
-                            {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>{item.name}</Text></View> */}
-                            <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>name name </Text></View>
-                            {/* <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : {item.price}</Text></View> */}
-                            <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR : 89889080</Text></View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-22.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-23.png')}
-                                    />
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Image
-                                        style={{
-                                            width: '100%',
-                                            height: 30,
-                                        }}
-                                        resizeMode="contain"
-                                        source={require('../images/icon-24.png')}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                            </Text>
 
                 </View>
-                {/* )}
-                /> */}
 
+                <View style={{ flexDirection: 'row', alignSelf: 'center', width: width - 30, marginBottom: 60 }}>
+
+                    <FlatList
+                        data={this.state.featureproperties}
+                        numColumns={3}
+                        // style={{ flex: 1 }}
+                        renderItem={({ item, index }) => (
+
+                            <TouchableOpacity
+                                style={{ flex: 1, marginBottom: 20 }}
+                                onPress={() => this.props.navigation.navigation.navigate('PropertyDetails', { prop_id: item.id })}
+                            >
+                                <View style={{ borderLeftWidth: 5, borderRightWidth: 5, borderRightColor: '#fff', borderLeftColor: '#fff', width: width / 3 }}>
+                                    <Image
+                                        style={{
+                                            width: '100%',
+                                            height: 115,
+                                        }}
+                                        resizeMode="contain"
+                                        // source={require('../images/image.png')}
+                                        source={{uri:item.image}}
+                                    />
+                                    <View><Text>{item.address} </Text></View>
+                                    {/* <View><Text style={{ color: '#43c6ac', fontWeight: 'bold', }}>Huzaifa Comfort</Text></View> */}
+                                    <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 3, }}><Text>PKR :{item.price} </Text></View>
+                                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                        <View style={{ flex: 1 }}>
+                                            <Image
+                                                style={{
+                                                    width: '100%',
+                                                    height: 30,
+                                                }}
+                                                resizeMode="contain"
+                                                source={require('../images/icon-22.png')}
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Image
+                                                style={{
+                                                    width: '100%',
+                                                    height: 30,
+                                                }}
+                                                resizeMode="contain"
+                                                source={require('../images/icon-23.png')}
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Image
+                                                style={{
+                                                    width: '100%',
+                                                    height: 30,
+                                                }}
+                                                resizeMode="contain"
+                                                source={require('../images/icon-24.png')}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    />
+
+                </View>
 
             </ScrollView>
         )
 
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
