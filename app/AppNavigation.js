@@ -20,6 +20,13 @@ import { Form } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
+
+//  function logout(){
+
+//   console.log('here');
+//   this.props.setUser(this.state);
+//   this.props.navigation.navigate('SignIn')
+// }
 function CustomDrawerContent({ navigation }) {
   return (
     <ScrollView style={{ backgroundColor: '#43C6AC' }}>
@@ -179,7 +186,7 @@ function CustomDrawerContent({ navigation }) {
       </TouchableHighlight>
       <TouchableHighlight
         underlayColor="#191654"
-        // onPress={() => { navigation.navigate('PrivacyPolicy'); }}
+        onPress={() => { navigation.navigate('SignIn'); }}
         style={styles.TouchBtn}
       >
         <View style={{ flexDirection: 'row' }}>

@@ -16,7 +16,6 @@ import {
 import HomeData from '../views/HomeData';
 import HeaderHome from '../includes/HeaderHome';
 import { Constants } from '../views/Constant';
-import { type } from 'os';
 var { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
@@ -71,15 +70,21 @@ export default class Home extends React.Component {
                         {this.state.tabIndex == 1 ?
 
                             <View style={styles.TextBoxArea}>
-                                <TextInput
+                                {/* <TextInput
                                     underlineColorAndroid="transparent"
                                     onChangeText={text => this.setState({ email: text })}
                                     placeholder="Search Buy Properties"
                                     placeholderTextColor="#A9A9A9"
                                     style={styles.TextInputArea}
-                                />
+                                /> */}
+                                <TouchableOpacity 
+                                 onPress={() => this.props.navigation.navigate('SearchProperties', { type: 'buy' })}>
+                                <View style={{alignContent:'center' , width: width -80}}>
+                                    <Text style={{color:'#A9A9A9', marginRight:40,textAlign:'center', fontSize:15, marginTop:10}}> Search Buy Properties</Text>
+                                </View>
+                                </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => this.props.navigation.navigate('SearchProperties',{type:'buy'})}
+                                    onPress={() => this.props.navigation.navigate('SearchProperties', { type: 'buy' })}
                                     style={styles.TextInputIcon}
                                 >
                                     <Image
@@ -91,15 +96,21 @@ export default class Home extends React.Component {
                             :
 
                             <View style={styles.TextBoxArea}>
-                                <TextInput
+                                {/* <TextInput
                                     underlineColorAndroid="transparent"
                                     onChangeText={text => this.setState({ email: text })}
                                     placeholder="Search Rent Properties"
                                     placeholderTextColor="#A9A9A9"
                                     style={styles.TextInputArea}
-                                />
+                                /> */}
+                                 <TouchableOpacity 
+                                 onPress={() => this.props.navigation.navigate('SearchProperties', { type: 'rent' })}>
+                                <View style={{alignContent:'center' , width: width -80}}>
+                                    <Text style={{color:'#A9A9A9', marginRight:40,textAlign:'center', fontSize:15, marginTop:10}}> Search Rent Properties</Text>
+                                </View>
+                                </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => this.props.navigation.navigate('SearchProperties',{type:'rent'})}
+                                    onPress={() => this.props.navigation.navigate('SearchProperties', { type: 'rent' })}
                                     style={styles.TextInputIcon}
                                 >
                                     <Image

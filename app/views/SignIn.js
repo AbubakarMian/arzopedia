@@ -29,8 +29,8 @@ class SignIn extends React.Component {
         super(props);
         this.state = {
             name: '',
-            email: 'Ham@mail.com',
-            password: '123',
+            email: '',
+            password: '',
             message: '',
             user: '',
             id: 0
@@ -43,6 +43,7 @@ class SignIn extends React.Component {
     SignInRequest = () => {
         this.setState({ spinner: true });
         if (this.state.email.trim() === '' || this.state.password.trim() == '') {
+            this.setState({ spinner: false });
             //  this.refs.PopUp.setModal(true, 'Please Enter valid Input');
             Alert.alert('Error', 'Please Enter Valid Input');
             return;
