@@ -72,7 +72,7 @@ function CustomDrawerContent({ navigation }) {
           <Text style={styles.BtnText}>Add Properties</Text>
         </View>
       </TouchableHighlight>
-      <TouchableHighlight
+      {/* <TouchableHighlight
         underlayColor="#191654"
         onPress={() => { navigation.navigate('SearchProperties'); }}
         style={styles.TouchBtn}
@@ -135,7 +135,7 @@ function CustomDrawerContent({ navigation }) {
           />
           <Text style={styles.BtnText}>Emails</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableHighlight> */}
       <TouchableHighlight
         underlayColor="#191654"
         onPress={() => { navigation.navigate('ContactUs'); }}
