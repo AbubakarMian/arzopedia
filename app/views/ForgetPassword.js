@@ -29,7 +29,60 @@ export default class ForgetPassword extends React.Component {
         header: null,
     };
 
+    sendlink= async () =>{
+        if (this.state.email.trim() === '' || this.state.password.trim() == '') {
+            this.setState({ spinner: false });
+            //  this.refs.PopUp.setModal(true, 'Please Enter valid Input');
+            Alert.alert('Error', 'Please Enter Valid Input');
+            return;
+        }  
+      Alert.alert('New password send successfully');
+      this.props.navigation.navigate('SignIn')
+     console.log('sendlink 1');
+        var formData = new FormData();
+        formData.append('email', this.state.email); 
+       
+        console.log('sendlink 2');
+ 
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
+                'Authorization-secure': 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
+                'client-id': 'arzopedia-app-mobile'
+            },
+            body: formData,
+        };
+     console.log('sendlink 3');
 
+        // console.log('url', Constants.signup);
+        fetch('http://development.hatinco.com/arzopediabackend/public/api/forgetpassword', postData)
+            .then(response => response.text())
+            .then(async responseJson => {
+     console.log('responseJson',responseJson);
+              
+                console.log('responseJson', responseJson.error);
+                if (responseJson.status === true) {
+                    this.setState({
+                    
+                    });
+                    this.props.setUser(this.state);
+                    Alert.alert("Message sent successfully")
+                     {() => this.props.navigation.navigate('SignIn')} 
+                } else {
+                    let message = JSON.stringify(responseJson.error.message)
+                    Alert.alert('Error', message)
+                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                }
+            })
+            .catch(error => {
+     console.log('responseJson error',error);
+
+            });  
+    
+};
     render() {
         return (
             <View style={styles.container}>
@@ -65,7 +118,8 @@ export default class ForgetPassword extends React.Component {
 
                             </View>
                             <TouchableHighlight
-                                onPress={{}}
+                                
+                                onPress={() => this.sendlink()}
                                 underlayColor='#1b1464'
                                 style={styles.SignUpTuch} >
                                 <View >

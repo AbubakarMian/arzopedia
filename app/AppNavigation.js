@@ -210,17 +210,26 @@ export default class AppNavigation extends React.Component {
   render() {
 
     return (
-      <NavigationContainer>
+      <NavigationContainer unmountOnBlur={true} options={{unmountOnBlur: true}} >
 
-        <Drawer.Navigator
+        <Drawer.Navigator 
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
             
         
             
-          <Drawer.Screen name="SignIn" component={SignIn} />
+          <Drawer.Screen name="SignIn" component={SignIn} 
+          
+          options={{
+            swipeEnabled: false
+          }}
+          />
           <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="SignUp" component={SignUp} />
-          <Drawer.Screen name="AddProperties" component={AddProperties} />
+          <Drawer.Screen name="SignUp" component={SignUp}
+           options={{
+            swipeEnabled: false
+          }}
+          />
+          <Drawer.Screen name="AddProperties" component={AddProperties}  />
           <Drawer.Screen name="ForgetPassword" component={ForgetPassword} />
           <Drawer.Screen name="SearchProperties" component={SearchProperties} />
           <Drawer.Screen name="SearchResults" component={SearchResults} />

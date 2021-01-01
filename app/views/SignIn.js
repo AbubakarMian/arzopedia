@@ -108,10 +108,11 @@ class SignIn extends React.Component {
                                     style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
+                                        onChangeText={text => this.setState({ email:text })}
                                         placeholder="Email"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        keyboardType={'email-address'}
                                     />
                                 </View>
                                 <View
@@ -124,6 +125,7 @@ class SignIn extends React.Component {
                                         placeholderTextColor="#1d1d1d"
                                         secureTextEntry={true}
                                         style={styles.TextInputArea}
+                                        keyboardType={'default'}
                                     />
                                 </View>
                             </View>
