@@ -40,19 +40,23 @@ export default class AddProperties extends React.Component {
             bed: '',
             sqm: '',
             contact: '',
-            type: '',
-            property_type: 1,
+            type: ['Sale','Rent'],
+            property_type: [],
             avatar:[]
 
         };
     }
 
+   
+    
     componentDidMount() {
+        
         this.getPropertyType();
     }
 
-
+    
     getPropertyType() {
+       
         let postData = {
             method: 'GET',
             headers: {
@@ -177,8 +181,8 @@ export default class AddProperties extends React.Component {
         };
         console.log('post data !!!!!!!!!!!!!', postData);
         // fetch(Constants.uploadFile, postData)
-        // await fetch('https://development.hatinco.com/greetings_backed/public/api/uploadFile', postData)
-        await fetch(Constants.uploadFile, postData)
+        await fetch('http://development.hatinco.com/arzopediabackend/public/api/uploadFile', postData)
+        // await fetch(Constants.uploadFile, postData)
             .then(response => response.json())
             .then(async responseJson => {
                 this.setState({
@@ -252,6 +256,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Price"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                            keyboardType={'decimal-pad'}
                                         />
                                     </View>
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
@@ -272,6 +277,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Latitude"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                            keyboardType={'decimal-pad'}
                                         />
                                     </View>
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
@@ -281,6 +287,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Logitude"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                            keyboardType={'decimal-pad'}
                                         />
                                     </View>
                                 </View>
@@ -292,6 +299,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Area"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                            keyboardType={'number-pad'}
                                         />
                                     </View>
                                     <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
@@ -301,6 +309,7 @@ export default class AddProperties extends React.Component {
                                             placeholder="Contact No"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                            keyboardType={'number-pad'}
                                         />
                                     </View>
                                 </View>
@@ -325,16 +334,36 @@ export default class AddProperties extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <View style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}>
-                                        <TextInput
+                                    {/* <View 
+                                    style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}
+                                    > */}
+                                        {/* <TextInput
                                             underlineColorAndroid="transparent"
                                             onChangeText={text => this.setState({ type: text })}
                                             placeholder="Type"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
+                                        /> */}
+                                        <DropDownPicker
+                                            items={this.state.type}
+                                            containerStyle={{ height: 50, width: width - 50, marginTop: 15 }}    
+                                            style={{
+                                                borderColor: '#ccc',
+                                                backgroundColor: '#fff',
+                                                borderRadius: 10, marginTop: 5,
+                                                borderWidth: 2
+                                            }}
+                                            itemStyle={{
+                                                justifyContent: 'flex-start'
+                                            }}
+                                            placeholder="Type"
+                                            dropDownStyle={{ backgroundColor: '#fafafa' }}
+                                            onChangeItem={item => this.setState({
+                                                type: item.name
+                                            })}
                                         />
-                                    </View>
-                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                    {/* </View> */}
+                                    {/* <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
                                             onChangeText={text => this.setState({ bath: text })}
@@ -342,7 +371,7 @@ export default class AddProperties extends React.Component {
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
-                                    </View>
+                                    </View> */}
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1, marginRight: 5 }}>
@@ -366,7 +395,7 @@ export default class AddProperties extends React.Component {
                                             })}
                                         />
                                     </View>
-                                    <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
+                                    {/* <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
                                         <TextInput
                                             underlineColorAndroid="transparent"
                                             onChangeText={text => this.setState({ bath: text })}
@@ -374,7 +403,7 @@ export default class AddProperties extends React.Component {
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
-                                    </View>
+                                    </View> */}
 
                                 </View>
                                 <TouchableHighlight

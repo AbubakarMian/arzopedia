@@ -99,6 +99,7 @@ export default class Emails extends React.Component {
                                         placeholder="Enter Name"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        
                                     />
                                 </View>
                                 <View style={styles.TextBoxArea}>
@@ -108,6 +109,7 @@ export default class Emails extends React.Component {
                                         placeholder="Enter Email"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        keyboardType={'email-address'}
                                     />
                                 </View>
                                 <View style={styles.TextBoxArea}>
@@ -117,6 +119,7 @@ export default class Emails extends React.Component {
                                         placeholder="Enter Number"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        keyboardType={'number-pad'}
                                     />
                                 </View>
                                 <View style={styles.TextBoxAreaMsg}>

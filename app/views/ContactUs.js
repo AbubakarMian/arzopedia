@@ -19,8 +19,72 @@ var { width, height } = Dimensions.get('window');
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
 
 export default class ContactUs extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            email: '',
+            subject:'',
+            message:'',
+        }
+    }
+    sendmessage= async () =>{
+        if (this.state.email.trim() === '') {
+            this.setState({ spinner: false });
+            //  this.refs.PopUp.setModal(true, 'Please Enter valid Input');
+            Alert.alert('Error', 'Please Enter Valid Input');
+            return;
+        }  
+      Alert.alert('Message send successfully');
+      this.props.navigation.navigate('SignIn')
+     console.log('sendlink 1');
+        var formData = new FormData();
+        formData.append('name', this.state.name);
+        formData.append('email', this.state.email); 
+        formData.append('subject', this.state.subject); 
+        formData.append('message', this.state.message);  
+       
+        console.log('sendlink 2');
+ 
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
+                'Authorization-secure': 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
+                'client-id': 'arzopedia-app-mobile'
+            },
+            body: formData,
+        };
+     console.log('sendlink 3');
 
+        // console.log('url', Constants.signup);
+        fetch('http://development.hatinco.com/arzopediabackend/public/api/contact', postData)
+            .then(response => response.text())
+            .then(async responseJson => {
+     console.log('responseJson',responseJson);
+              
+                console.log('responseJson', responseJson.error);
+                if (responseJson.status === true) {
+                    this.setState({
+                    
+                    });
+                    this.props.setUser(this.state);
+                    Alert.alert("Message sent successfully")
+                     
+                } else {
+                    let message = JSON.stringify(responseJson.error.message)
+                    Alert.alert('Error', message)
+                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                }
+            })
+            .catch(error => {
+     console.log('responseJson error',error);
 
+            });  
+    
+};
     render() {
         return (
             <View style={styles.container}>
@@ -34,7 +98,7 @@ export default class ContactUs extends React.Component {
                             <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
+                                        onChangeText={text => this.setState({ name: text })}
                                         placeholder="Your Name (required)"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
@@ -47,15 +111,17 @@ export default class ContactUs extends React.Component {
                                         placeholder="Your Email (required)"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        keyboardType={'email-address'}
                                     />
                                 </View>
                                 <View style={styles.TextBoxArea}>
                                     <TextInput
                                         underlineColorAndroid="transparent"
-                                        onChangeText={text => this.setState({ email: text })}
+                                        onChangeText={text => this.setState({ subject: text })}
                                         placeholder="Subject"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        
                                     />
                                 </View>
                                 <View style={styles.TextBoxAreaMsg}>
@@ -73,6 +139,8 @@ export default class ContactUs extends React.Component {
                                 <TouchableHighlight
                                     onPress={{}}
                                     // onPress={() => this.props.setUser()}
+                                    
+                                    onPress={() => this.sendmessage()}
                                     underlayColor='#1b1464'
                                     style={[{ width: width - 66 }, styles.LoginTouch]} >
                                     <View >
