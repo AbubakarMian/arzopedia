@@ -15,5 +15,7 @@ export const Constants = {
   searchProperty: `${base_url}/searchProperty`,
   propert_detail: `${base_url}/propert_detail`,
   sendMail: `${base_url}/sendMail`,
+  contact:`${base_url}/contact`,
+  forgetpassword:`${base_url}/forgetpassword`
  
 };

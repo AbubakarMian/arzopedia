@@ -75,8 +75,8 @@ export default class SearchResults extends React.Component {
                                         </View>
                                         <View style={{ flex: 3, paddingLeft: 10, alignSelf: 'center' }}>
                                             
-                                            <HTML source={{ html: item.details }} renderers={{
-                                                p: (_, children) => <Text numberOfLines={1}>{children}</Text>,
+                                            <HTML  source={{  html: item.details }}  renderers={{
+                                                p: (_, children) => <Text numberOfLines={1}>  {children}</Text>,
                                             }} />
                                             <Text style={{ color: '#43c6ac', paddingVertical: 5 }}>
                                                 {item.address}

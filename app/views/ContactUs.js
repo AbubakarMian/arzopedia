@@ -13,6 +13,7 @@ import {
     ScrollView, Platform, Alert, Picker
 } from 'react-native';
 import Header from '../includes/Header';
+import { Constants } from './Constant';
 // import styles from '../styleSheets/SignUpCss'
 var { width, height } = Dimensions.get('window');
 
@@ -29,61 +30,44 @@ export default class ContactUs extends React.Component {
         }
     }
     sendmessage= async () =>{
+        this.setState({ spinner: true });
         if (this.state.email.trim() === '') {
             this.setState({ spinner: false });
-            //  this.refs.PopUp.setModal(true, 'Please Enter valid Input');
             Alert.alert('Error', 'Please Enter Valid Input');
             return;
         }  
-      Alert.alert('Message send successfully');
-      this.props.navigation.navigate('SignIn')
-     console.log('sendlink 1');
         var formData = new FormData();
-        formData.append('name', this.state.name);
+        formData.append('name', this.state.name); 
         formData.append('email', this.state.email); 
-        formData.append('subject', this.state.subject); 
+        formData.append('subject', this.state.subject);
         formData.append('message', this.state.message);  
-       
-        console.log('sendlink 2');
- 
         let postData = {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
-                'Authorization-secure': 'EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==',
-                'client-id': 'arzopedia-app-mobile'
+                'Content-Type': 'multipart/form-data',
+                Authorization: Constants.autherizationKey,
+                'Authorization-secure': Constants.autherizationKey,
+                'client-id': Constants.clientID
             },
             body: formData,
         };
      console.log('sendlink 3');
-
-        // console.log('url', Constants.signup);
-        fetch('http://development.hatinco.com/arzopediabackend/public/api/contact', postData)
-            .then(response => response.text())
+        fetch(Constants.contact, postData)
+            .then(response => response.json())
             .then(async responseJson => {
-     console.log('responseJson',responseJson);
-              
-                console.log('responseJson', responseJson.error);
                 if (responseJson.status === true) {
+                    Alert.alert("Message sent successfully");
+                    this.props.navigation.navigate('Home')
                     this.setState({
-                    
+                       spinner:false
                     });
                     this.props.setUser(this.state);
-                    Alert.alert("Message sent successfully")
-                     
-                } else {
-                    let message = JSON.stringify(responseJson.error.message)
-                    Alert.alert('Error', message)
-                    // this.refs.PopUp.setModal(true, responseJson.error.message);
                 }
             })
             .catch(error => {
-     console.log('responseJson error',error);
-
+               console.log('responseJson error',error);
             });  
-    
 };
     render() {
         return (
@@ -121,7 +105,6 @@ export default class ContactUs extends React.Component {
                                         placeholder="Subject"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
-                                        
                                     />
                                 </View>
                                 <View style={styles.TextBoxAreaMsg}>
