@@ -230,7 +230,11 @@ export default class AppNavigation extends React.Component {
           }}
           />
           <Drawer.Screen name="AddProperties" component={AddProperties}  />
-          <Drawer.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Drawer.Screen name="ForgetPassword" component={ForgetPassword} 
+           options={{
+            swipeEnabled: false
+          }}
+          />
           <Drawer.Screen name="SearchProperties" component={SearchProperties} />
           <Drawer.Screen name="SearchResults" component={SearchResults} />
           <Drawer.Screen name="PropertyDetails" component={PropertyDetails} />

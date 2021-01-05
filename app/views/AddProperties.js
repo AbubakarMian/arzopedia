@@ -17,13 +17,9 @@ import { Constants } from '../views/Constant';
 import DropDownPicker from 'react-native-dropdown-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
-// import styles from '../styleSheets/SignUpCss'
 var { width, height } = Dimensions.get('window');
-
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
-
 export default class AddProperties extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -40,23 +36,15 @@ export default class AddProperties extends React.Component {
             bed: '',
             sqm: '',
             contact: '',
-            type: ['Sale','Rent'],
-            property_type: [],
-            avatar:[]
-
+            type: [],
+            property_type: '',
+            avatar:''
         };
     }
-
-   
-    
-    componentDidMount() {
-        
+    componentDidMount() {   
         this.getPropertyType();
     }
-
-    
-    getPropertyType() {
-       
+    getPropertyType() {  
         let postData = {
             method: 'GET',
             headers: {
@@ -71,16 +59,13 @@ export default class AddProperties extends React.Component {
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({ spinner: false });
-                console.log('"response Json type   ', responseJson.response);
                 if (responseJson.status === true) {
                     let res = responseJson.response;
-                    let categoryarr = res.map((x, key) => { return { label: x.name, value: x.id } });
-                    console.log('categoryarr !!!!!!!!', categoryarr);
+                    let categoryarr = res.map((x, key) => { return { label: x.name, value: x.id } }); 
                     this.setState({
                         categoryarr: categoryarr,
                     });
                 } else {
-                    // this.refs.PopUp.setModal(true , responseJson.error.message);
                     Alert.alert('Error', 'Bad Request');
                 }
             })
@@ -88,13 +73,13 @@ export default class AddProperties extends React.Component {
                 console.log(error);
             });
     }
-
-    addProperty() {
+    addProperty=()=> {
         this.setState({
             spinner: true,
         })
         var formData = new FormData();
-        formData.append('details', this.state.details); // this.state.email
+        formData.append('categoryarr',this.state.categoryarr.value);
+        formData.append('details', this.state.details);
         formData.append('address', this.state.address);
         formData.append('title', this.state.title);
         formData.append('price', this.state.price);
@@ -106,9 +91,8 @@ export default class AddProperties extends React.Component {
         formData.append('sqm', this.state.sqm);
         formData.append('contact', this.state.contact);
         formData.append('type', this.state.type);
-        formData.append('property_type_id', this.state.property_type);
+        formData.append('property_type_id',this.state.property_type );
         formData.append('avatar', this.state.avatar);
-        console.log('formData', formData)
         let postData = {
             method: 'POST',
             headers: {
@@ -120,28 +104,21 @@ export default class AddProperties extends React.Component {
             },
             body: formData,
         };
-        console.log('url', Constants.addProperty);
         fetch(Constants.addProperty, postData)
             .then(response => response.json())
             .then(async responseJson => {
-                this.setState({ spinner: false });
-                console.log('responseJson', responseJson);
                 if (responseJson.status === true) {
                     this.setState({
-                        access_token: responseJson.response.access_token,
-                    });
-                    this.props.setUser(this.state);
-                    this.props.navigation.navigate('Home')
-                } else {
-                    Alert.alert('Error', 'Greetings Error')
-                    // this.refs.PopUp.setModal(true, responseJson.error.message);
+                        spinner: false,
+                    })
+                    Alert.alert(""+responseJson.response)
+                    console.log(responseJson)
                 }
             })
             .catch(error => {
-            });
+               console.log('responseJson error',error);
+            });             
     }
-
-
     imageUpload() {
         ImagePicker.openPicker({
             filename: true,
@@ -154,11 +131,8 @@ export default class AddProperties extends React.Component {
                 spinner: true,
             })
             this.getImage(image);
-
         })
-
     }
-
     async getImage(image) {
         const upload_body = {
             uri: image.path,
@@ -175,37 +149,32 @@ export default class AddProperties extends React.Component {
                 'Content-Type': 'multipart/form-data',
                 Authorization: Constants.autherizationKey,
                 'Authorization-secure': Constants.autherizationKey,
-                'client-id': Constants.uploadFile
+                'client-id': Constants.clientID
             },
             body: _data_body,
         };
         console.log('post data !!!!!!!!!!!!!', postData);
-        // fetch(Constants.uploadFile, postData)
-        await fetch('http://development.hatinco.com/arzopediabackend/public/api/uploadFile', postData)
-        // await fetch(Constants.uploadFile, postData)
+        await fetch(Constants.uploadFile, postData)
             .then(response => response.json())
             .then(async responseJson => {
                 this.setState({
                     spinner: false,
                 });
                 console.log('upload image responseJson', responseJson);
+                
                 if (responseJson.status === true) {
+                    
                     let array_list = this.state.avatar.concat(responseJson.response);
                     this.setState({
                         avatar: array_list,
                     });
                 } else {
                       Alert.alert('Error', responseJson.error);
-                    // console.log('Error', responseJson.error);
-                    // this.refs.PopUp.setModal(true, responseJson.error.message);
                 }
             })
             .catch(error => {
-
             });
-
     }
-
     render() {
         return (
             <View style={styles.container}>
@@ -334,18 +303,11 @@ export default class AddProperties extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    {/* <View 
-                                    style={[{ flex: 1, marginRight: 5 }, styles.TextBoxArea]}
-                                    > */}
-                                        {/* <TextInput
-                                            underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ type: text })}
-                                            placeholder="Type"
-                                            placeholderTextColor="#1d1d1d"
-                                            style={styles.TextInputArea}
-                                        /> */}
                                         <DropDownPicker
-                                            items={this.state.type}
+                                            items={[
+                                                {label: 'Rent', value: 'rent', hidden: true},
+                                                {label: 'Sale', value: 'sale'}
+                                            ]}
                                             containerStyle={{ height: 50, width: width - 50, marginTop: 15 }}    
                                             style={{
                                                 borderColor: '#ccc',
@@ -359,26 +321,14 @@ export default class AddProperties extends React.Component {
                                             placeholder="Type"
                                             dropDownStyle={{ backgroundColor: '#fafafa' }}
                                             onChangeItem={item => this.setState({
-                                                type: item.name
+                                                type: item.value
                                             })}
-                                        />
-                                    {/* </View> */}
-                                    {/* <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
-                                        <TextInput
-                                            underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ bath: text })}
-                                            placeholder="Bathroom"
-                                            placeholderTextColor="#1d1d1d"
-                                            style={styles.TextInputArea}
-                                        />
-                                    </View> */}
+                                        />                     
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1, marginRight: 5 }}>
-                                        {/* {this.state.categoryarr.length < 1 ? null : */}
                                         <DropDownPicker
-                                            items={this.state.categoryarr}
-                                            // containerStyle={{ height: 50, width: width - 50, marginTop: 15 }}    
+                                            items={this.state.categoryarr} 
                                             style={{
                                                 borderColor: '#ccc',
                                                 backgroundColor: '#fff',
@@ -391,24 +341,13 @@ export default class AddProperties extends React.Component {
                                             placeholder="Property Type"
                                             dropDownStyle={{ backgroundColor: '#fafafa' }}
                                             onChangeItem={item => this.setState({
-                                                property_type: item.name
+                                                property_type: item.value
                                             })}
                                         />
                                     </View>
-                                    {/* <View style={[{ flex: 1, marginLeft: 5 }, styles.TextBoxArea]}>
-                                        <TextInput
-                                            underlineColorAndroid="transparent"
-                                            onChangeText={text => this.setState({ bath: text })}
-                                            placeholder="Bathroom"
-                                            placeholderTextColor="#1d1d1d"
-                                            style={styles.TextInputArea}
-                                        />
-                                    </View> */}
-
                                 </View>
                                 <TouchableHighlight
                                     onPress={() => this.imageUpload()}
-                                    // onPress={() => this.props.setUser()}
                                     underlayColor='#1b1464'
                                     style={[{ width: width - 150, marginBottom: 40 }, styles.LoginTouch]} >
                                     <View >
@@ -416,8 +355,7 @@ export default class AddProperties extends React.Component {
                                     </View>
                                 </TouchableHighlight>
                                 <TouchableHighlight
-                                    onPress={() => this.addProperty()}
-                                    // onPress={() => this.props.setUser()}
+                                    onPress={this.addProperty}
                                     underlayColor='#1b1464'
                                     style={[{ width: width - 80, marginBottom: 40 }, styles.LoginTouch]} >
                                     <View >
