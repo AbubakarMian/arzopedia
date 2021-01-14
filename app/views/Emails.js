@@ -15,27 +15,32 @@ import {
 import Header from '../includes/Header';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Constants } from '../views/Constant';
+import { connect } from 'react-redux';
+import { SET_USER, LOGOUT_USER } from '../redux/constants/index';
 var { width, height } = Dimensions.get('window');
 const isIos = Platform.OS === 'ios' ? '?ios' : '';
-export default class Emails extends React.Component {
+class Emails extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             spinner: false,
-            email: '',
-            name: '',
-            message: '',
-            number: '',
+            email: 'aukhan288@gmail.com',
+            name: 'Asadullah khan',
+            message: 'vdbh fd gdfg g fga',
+            number: '03002969860',
 
 
         }
     }
 
     sendEmail() {
+
+      
         this.setState({
             spinner:true
         })
+ 
         var formData = new FormData();
         formData.append('email', this.state.email); // this.state.email
         formData.append('phone', this.state.number);
@@ -99,6 +104,7 @@ export default class Emails extends React.Component {
                                         placeholder="Enter Name"
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
+                                        // value={this.props.user.name}
                                         
                                     />
                                 </View>
@@ -110,6 +116,7 @@ export default class Emails extends React.Component {
                                         placeholderTextColor="#1d1d1d"
                                         style={styles.TextInputArea}
                                         keyboardType={'email-address'}
+                                        // value={this.props.user.email}
                                     />
                                 </View>
                                 <View style={styles.TextBoxArea}>
@@ -151,6 +158,21 @@ export default class Emails extends React.Component {
         );
     }
 }
+
+
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
+};
+function mapDispatchToProps(dispatch) {
+    return {
+        setUser: (value) => dispatch({ type: SET_USER, value: value }),
+        logoutUser: () => dispatch({ type: LOGOUT_USER })
+    }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Emails)
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

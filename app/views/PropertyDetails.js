@@ -27,7 +27,7 @@ export default class PropertyDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            spinner: true,
+            // spinner: true,    
             propertydetail: {},
             address: '',
             bath: '',
@@ -45,13 +45,18 @@ export default class PropertyDetails extends React.Component {
 
         }
     }
-    componentDidMount() {
-
+   
+   
+    componentWillReceiveProps(){
+        console.log('componentWillReceiveProps !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! componentWillReceiveProps')
+        
         this.getproperty()
-
     }
 
+
     getproperty() {
+        
+        console.log('here in get prop ty')
         let postData = {
             method: 'GET',
             headers: {
@@ -68,7 +73,9 @@ export default class PropertyDetails extends React.Component {
             .then(responseJson => {
                 this.setState({ spinner: false });
                 console.log('response Json propert_detail ', responseJson.response);
+                this.setState({spinner:false})
                 if (responseJson.status === true) {
+                    
                     let arrAvatar = JSON.parse(responseJson.response.avatar)
                     console.log('arrAvatar', arrAvatar);
                     this.setState({

@@ -13,7 +13,6 @@ export const mylist = [];
 export default class Header extends React.Component {
 
     render() {
-        console.log('props !!!!!!!!',this.props.navigation.navigation)
         return (
             <View>
                 <View style={{

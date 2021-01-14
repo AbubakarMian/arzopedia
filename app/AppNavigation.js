@@ -72,70 +72,7 @@ function CustomDrawerContent({ navigation }) {
           <Text style={styles.BtnText}>Add Properties</Text>
         </View>
       </TouchableHighlight>
-      {/* <TouchableHighlight
-        underlayColor="#191654"
-        onPress={() => { navigation.navigate('SearchProperties'); }}
-        style={styles.TouchBtn}
-      >
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={{
-              width: 28,
-              height: 28,
-            }}
-            source={require('./images/icon-28.png')}
-          />
-          <Text style={styles.BtnText}>Search Properties</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight
-        underlayColor="#191654"
-        onPress={() => { navigation.navigate('SearchResults'); }}
-        style={styles.TouchBtn}
-      >
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={{
-              width: 28,
-              height: 28,
-            }}
-            source={require('./images/icon-28.png')}
-          />
-          <Text style={styles.BtnText}>Search Results</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight
-        underlayColor="#191654"
-        onPress={() => { navigation.navigate('PropertyDetails'); }}
-        style={styles.TouchBtn}
-      >
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={{
-              width: 28,
-              height: 28,
-            }}
-            source={require('./images/icon-28.png')}
-          />
-          <Text style={styles.BtnText}>Property Details</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight
-        underlayColor="#191654"
-        onPress={() => { navigation.navigate('Emails'); }}
-        style={styles.TouchBtn}
-      >
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={{
-              width: 28,
-              height: 28,
-            }}
-            source={require('./images/icon-28.png')}
-          />
-          <Text style={styles.BtnText}>Emails</Text>
-        </View>
-      </TouchableHighlight> */}
+     
       <TouchableHighlight
         underlayColor="#191654"
         onPress={() => { navigation.navigate('ContactUs'); }}
@@ -210,7 +147,7 @@ export default class AppNavigation extends React.Component {
   render() {
 
     return (
-      <NavigationContainer unmountOnBlur={true} options={{unmountOnBlur: true}} >
+      <NavigationContainer unmountOnBlur={true} unmountInactiveRoutes= {true} options={{unmountOnBlur: true}} >
 
         <Drawer.Navigator 
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
@@ -220,7 +157,7 @@ export default class AppNavigation extends React.Component {
           <Drawer.Screen name="SignIn" component={SignIn} 
           
           options={{
-            swipeEnabled: false
+            swipeEnabled: true
           }}
           />
           <Drawer.Screen name="Home" component={Home} />

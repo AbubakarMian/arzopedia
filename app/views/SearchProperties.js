@@ -68,8 +68,12 @@ export default class SearchProperties extends React.Component {
                 this.setState({ spinner: false });
                 console.log('responseJson', responseJson);
                 if (responseJson.status === true) {
-                    let res = responseJson.response;
+                    if (responseJson.response=='') {
+                        Alert.alert("Nothing to match")
+                    }else{
+                        let res = responseJson.response;
                     this.props.navigation.navigate('SearchResults', {properties:res})
+                    }
                 } else {
                     Alert.alert('Error',  responseJson.error.message)
                     // this.refs.PopUp.setModal(true, responseJson.error.message);
@@ -148,7 +152,7 @@ export default class SearchProperties extends React.Component {
                                         <TextInput
                                             underlineColorAndroid="transparent"
                                             onChangeText={text => this.setState({ maxPrice: text })}
-                                            placeholder="Max Area"
+                                            placeholder="Max Price"
                                             placeholderTextColor="#1d1d1d"
                                             style={styles.TextInputArea}
                                         />
