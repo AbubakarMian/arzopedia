@@ -34,7 +34,8 @@ export default class HomeData extends React.Component {
             spinner: true
         }
     }
-
+    
+  
     componentDidMount() {
         console.log('here in didmount ')
         this.getpopularproject();
@@ -113,7 +114,6 @@ export default class HomeData extends React.Component {
 
 
     render() {
-        console.log('props !!!!!!!!!',this.props)
         return (
             <ScrollView>
                 <Spinner
@@ -173,7 +173,7 @@ export default class HomeData extends React.Component {
 
                             <TouchableOpacity
                                 style={{ flex: 1, marginBottom: 20 }}
-                                onPress={() => this.props.navigation.navigation.navigate('PropertyDetails', { prop_id: item.id })}
+                                onPress={() => this.props.navigation.navigation.navigate('PropertyDetails',  { prop_id: item.id })}
                             >
                                 <View style={{ borderLeftWidth: 5, borderRightWidth: 5, borderRightColor: '#fff', borderLeftColor: '#fff', width: width / 3 }}>
                                     <Image

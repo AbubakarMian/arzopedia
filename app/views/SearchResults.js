@@ -26,15 +26,21 @@ export default class SearchResults extends React.Component {
         super(props);
         this.state = {
             propertyList: [],
-
+           
         }
-    }
 
+    }
+    
     componentDidMount() {
+      
+        
         this.setState({
+            
             propertyList: this.props.route.params.properties
+            
         })
     }
+    
     render() {
         return (
             <View style={styles.container}>
@@ -75,12 +81,17 @@ export default class SearchResults extends React.Component {
                                         </View>
                                         <View style={{ flex: 3, paddingLeft: 10, alignSelf: 'center' }}>
                                             
-                                            <HTML  source={{  html: item.details }}  renderers={{
+                                            {/* <HTML  source={{  html: item.details }}  renderers={{
                                                 p: (_, children) => <Text numberOfLines={1}>  {children}</Text>,
-                                            }} />
-                                            <Text style={{ color: '#43c6ac', paddingVertical: 5 }}>
+                                            }} /> */}
+                                            {/* color: '#43c6ac', */}
+                                            <View style={{borderBottomWidth:1}}>
+                                            <Text
+                                            numberOfLines={2}
+                                            style={{  paddingVertical: 5, }}>
                                                 {item.address}
                                             </Text>
+                                            </View>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <View style={{ flex: 1 }}>
                                                     <Image
