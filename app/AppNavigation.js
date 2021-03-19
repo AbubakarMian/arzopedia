@@ -13,6 +13,7 @@ import Emails from './views/Emails';
 import ContactUs from './views/ContactUs';
 import PrivacyPolicy from './views/PrivacyPolicy';
 import AboutUs from './views/AboutUs';
+import Dashboard from './views/Dashboard';
 import { Icon } from 'native-base';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -54,6 +55,22 @@ function CustomDrawerContent({ navigation }) {
             source={require('./images/icon-28.png')}
           />
           <Text style={styles.BtnText}>Home</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight
+        underlayColor="#191654"
+        onPress={() => { navigation.navigate('Dashboard'); }}
+        style={styles.TouchBtn}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            style={{
+              width: 28,
+              height: 28,
+            }}
+            source={require('./images/icon-28.png')}
+          />
+          <Text style={styles.BtnText}>Dashboard</Text>
         </View>
       </TouchableHighlight>
       <TouchableHighlight
@@ -172,6 +189,7 @@ export default class AppNavigation extends React.Component {
             swipeEnabled: false
           }}
           />
+          <Drawer.Screen name="Dashboard" component={Dashboard} />
           <Drawer.Screen name="SearchProperties" component={SearchProperties} />
           <Drawer.Screen name="SearchResults" component={SearchResults} />
           <Drawer.Screen name="PropertyDetails" component={PropertyDetails} />

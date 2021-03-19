@@ -41,15 +41,23 @@ export default class PropertyDetails extends React.Component {
             type: '',
             name: '',
             user_id: '',
-            avatar: []
+            avatar: [],
+            screen_name:''
 
         }
     }
    
+    componentDidMount(){
+        this.getproperty();
+        console.log('props !!!!!!', this.props.route.name)
+        this.setState({
+            screen_name:this.props.route.name
+        })
+    }
    
     componentWillReceiveProps(){
         console.log('componentWillReceiveProps !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! componentWillReceiveProps')
-        
+        console.log('')
         this.getproperty()
     }
 
@@ -173,6 +181,7 @@ export default class PropertyDetails extends React.Component {
                                     <HTML source={{ html: this.state.details }} />
                                 </View>
                             </View>
+                            {(this.state.screen_name != 'PropertyDetails')? 
                             <TouchableHighlight
                                 onPress={() => this.props.navigation.navigate('Emails',{user_id:this.state.user_id})}
                                 // onPress={() => this.props.setUser()}
@@ -190,6 +199,7 @@ export default class PropertyDetails extends React.Component {
                                     <Text style={{ color: '#fff', fontSize: 20 }} >Email</Text>
                                 </View>
                             </TouchableHighlight>
+                            : null}
                         </View>
 
                     </ScrollView>

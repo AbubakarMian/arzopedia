@@ -3,8 +3,8 @@ const base_url = 'http://development.hatinco.com/arzopediabackend/public/api';
 
 export const Constants = {
   base_url: base_url,
-  autherizationKey:`EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==`,
-  clientID:`arzopedia-app-mobile`,
+  autherizationKey: `EvcGFyZWl0LWFwcC1hZG1pbjo4NmRmMjZkMi01NjE1LTRiOTAtYTBjYy1jMDM5OWJiasdYAnHYzYNCg==`,
+  clientID: `arzopedia-app-mobile`,
   addProperty: `${base_url}/add_property`,
   getFeatureProperty: `${base_url}/featureProperty`,
   getPopularProject: `${base_url}/allproject`,
@@ -15,7 +15,8 @@ export const Constants = {
   searchProperty: `${base_url}/searchProperty`,
   propert_detail: `${base_url}/propert_detail`,
   sendMail: `${base_url}/sendMail`,
-  contact:`${base_url}/contact`,
-  forgetpassword:`${base_url}/forgetpassword`
- 
+  contact: `${base_url}/contact`,
+  forgetpassword: `${base_url}/forgetpassword`,
+  dashboard: `${base_url}/dashboard`
+
 };
